@@ -72,6 +72,38 @@ npm run lint      # oxlint
 npm test          # vitest
 ```
 
+## Running it with Docker
+
+The app is a static site, so the image builds it and serves it with nginx — nothing else is needed at
+runtime.
+
+```bash
+docker compose up -d --build
+```
+
+It is then on <http://localhost:8080>, or on `http://<your-server>:8080` from elsewhere on your network.
+Change the host port in `docker-compose.yml` if 8080 is taken.
+
+Without compose:
+
+```bash
+docker build -t card-layout .
+docker run -d --name card-layout -p 8080:80 --restart unless-stopped card-layout
+```
+
+The image is about 63 MB, serves the SPA with a fallback so deep links work, caches fingerprinted assets
+for a year while keeping `index.html` and `sw.js` uncached, and reports a health status.
+
+Two things worth knowing when you host it yourself:
+
+- **Projects live in the browser, not on the server.** Everything is stored in IndexedDB on the machine
+  you're using, so the same deployment shows different projects to different devices. Use the project
+  export/import to move a deck between them.
+- **Offline support and "install as app" need HTTPS.** Browsers only register a service worker on a
+  secure origin, and a plain `http://192.168.x.x:8080` isn't one. Put the container behind a reverse
+  proxy with a certificate (Caddy, Traefik, Nginx Proxy Manager) to get the PWA features on your LAN.
+  Without it the app still works normally — it just won't cache itself for offline use.
+
 ## A typical run
 
 1. Pick a template, or set the paper and card size yourself.

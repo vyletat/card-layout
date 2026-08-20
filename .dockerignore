@@ -1,0 +1,12 @@
+.git
+.gitignore
+.claude
+.idea
+node_modules
+dist
+dist-ssr
+*.log
+CLAUDE.md
+Dockerfile
+.dockerignore
+docker-compose.yml

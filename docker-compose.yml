@@ -1,0 +1,8 @@
+services:
+  card-layout:
+    build: .
+    image: card-layout:latest
+    container_name: card-layout
+    ports:
+      - '8080:80'
+    restart: unless-stopped
