@@ -1,0 +1,75 @@
+.print-view {
+  display: none;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .print-view,
+  .print-view * {
+    visibility: visible;
+  }
+
+  .print-view {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.sheet-page {
+  position: relative;
+  break-after: page;
+  overflow: hidden;
+}
+
+.sheet-page:last-child {
+  break-after: auto;
+}
+
+/* Carries the back-side calibration correction for the whole page. */
+.sheet-content {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+}
+
+.print-cell {
+  position: absolute;
+  overflow: hidden;
+  background: #fff;
+}
+
+.print-card-number {
+  position: absolute;
+  font-size: 2.6mm;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.reg-ring {
+  position: absolute;
+  border: 0.15mm solid #000;
+  border-radius: 50%;
+}
+
+.print-image {
+  position: absolute;
+  object-fit: fill;
+}
+
+.crop-mark {
+  position: absolute;
+  background: #000;
+}
+
+.crop-mark-h {
+  height: 0.15mm;
+}
+
+.crop-mark-v {
+  width: 0.15mm;
+}

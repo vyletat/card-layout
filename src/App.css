@@ -1,0 +1,503 @@
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ---------- Top bar (always on top) ---------- */
+.topbar {
+  flex-shrink: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  background: var(--panel-bg);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  z-index: 20;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-toggle {
+  padding: 7px;
+  border: 1px solid var(--border);
+  background: var(--control-bg);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+}
+
+.panel-toggle[aria-pressed='true'] {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.lang-toggle {
+  gap: 6px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.app-brand-logo {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--accent), #fbbf24);
+  box-shadow: var(--shadow-sm);
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Keep top-bar actions on one line whatever the translation length. */
+.topbar-actions button {
+  white-space: nowrap;
+}
+
+/* Project name and everything that acts on the project, kept together. */
+.topbar-project {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  margin-left: 4px;
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+}
+
+.project-name {
+  flex: 0 1 190px;
+  min-width: 90px;
+  padding: 5px 8px;
+  font-size: 13px;
+  border-color: transparent;
+  background: transparent;
+}
+
+.project-name:hover {
+  border-color: var(--border);
+  background: var(--control-bg);
+}
+
+.project-name:focus {
+  background: var(--control-bg);
+}
+
+/* Saving is automatic; this button flushes it early and confirms it happened. */
+.save-btn {
+  white-space: nowrap;
+  gap: 6px;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.save-btn.is-dirty {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.save-btn.is-saved {
+  border-color: var(--ok);
+  color: var(--ok);
+  background: var(--ok-bg);
+}
+
+/* Marks a project with changes that haven't been saved or exported yet. */
+.dirty-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ---------- Body: left | canvas | right ---------- */
+.app-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+.sidebar-left,
+.sidebar-right {
+  flex-shrink: 0;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--panel-bg-subtle);
+}
+
+.sidebar-left {
+  width: 340px;
+  min-width: 0;
+  border-right: 1px solid var(--border);
+  transition: width 0.22s ease;
+}
+
+.sidebar-left.is-collapsed {
+  width: 0;
+  border-right: none;
+}
+
+.sidebar-right {
+  width: 340px;
+  min-width: 0;
+  border-left: 1px solid var(--border);
+  transition: width 0.22s ease;
+}
+
+.sidebar-right.is-collapsed {
+  width: 0;
+  border-left: none;
+}
+
+.sidebar-inner {
+  min-width: 340px;
+  padding: 16px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---------- Panels (cards) ---------- */
+.project-file-panel,
+.settings-panel,
+.upload-panel,
+.export-panel,
+.calibration-panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+.project-file-panel h2,
+.settings-panel h2,
+.upload-panel h2,
+.export-panel h2,
+.calibration-panel h2 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.settings-panel h2 svg,
+.upload-panel h2 svg,
+.export-panel h2 svg,
+.calibration-panel h2 svg {
+  color: var(--accent);
+}
+
+/* remove old margin-top spacing now handled by sidebar gap */
+.upload-panel,
+.export-panel,
+.calibration-panel,
+.project-file-panel {
+  margin-top: 0;
+}
+
+fieldset {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 0 0 12px;
+  padding: 12px 12px 6px;
+  background: var(--panel-bg-subtle);
+}
+
+fieldset:last-child {
+  margin-bottom: 0;
+}
+
+legend {
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  padding: 0 6px;
+}
+
+/* ---------- Fields ---------- */
+.field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.field > span:first-child {
+  flex: 1;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.field input,
+.field select {
+  width: 116px;
+}
+
+.field.checkbox {
+  justify-content: flex-start;
+}
+
+.field.checkbox input {
+  width: auto;
+}
+
+.field.checkbox > span {
+  flex: 1;
+  font-size: 13px;
+}
+
+.field .unit {
+  flex: none;
+  width: 22px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.calibration-panel .field {
+  max-width: 240px;
+}
+
+.calibration-panel > button,
+.upload-panel > input[type='file'] {
+  margin-bottom: 12px;
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 12px;
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--panel-bg-subtle);
+  text-align: center;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.dropzone svg {
+  color: var(--text-muted);
+}
+
+.dropzone.is-drop-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.dropzone.is-drop-active svg {
+  color: var(--accent);
+}
+
+.dropzone-text {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.upload-hint {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin: 8px 0 12px;
+}
+
+.manage-btn {
+  width: 100%;
+  justify-content: center;
+  gap: 8px;
+}
+
+.upload-count {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.unassigned-list {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-strong);
+}
+
+.unassigned-list h3 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.unassigned-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.unassigned-row select {
+  flex: 1;
+}
+
+.thumb {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--panel-bg-subtle);
+}
+
+/* ---------- Main editor area (non-scrolling) ---------- */
+.main-area {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+}
+
+.editor-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.editor-toolbar {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  align-items: center;
+  padding: 8px 14px;
+  background: var(--panel-bg);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  z-index: 5;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toolbar-group:not(:last-child) {
+  padding-right: 14px;
+  border-right: 1px solid var(--border);
+}
+
+.toolbar-group > span {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.toolbar-group button {
+  padding: 6px 11px;
+}
+
+.toolbar-group .field.checkbox {
+  margin-bottom: 0;
+}
+
+/* Canvas viewport: fills the space under the toolbar, centered, no scroll */
+.canvas-viewport {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0) 0 0 / 22px 22px,
+    var(--bg);
+  overflow: hidden;
+}
+
+/* The paper itself is drawn (and shadowed) on the canvas, so panning works. */
+.canvas-viewport canvas {
+  cursor: grab;
+}
+
+.canvas-viewport canvas:active {
+  cursor: grabbing;
+}
+
+/* Sheet number / zoom percentage spin fields in the editor toolbar */
+.toolbar-num {
+  width: 62px;
+  padding: 5px 4px 5px 7px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.toolbar-group .toolbar-suffix {
+  min-width: 0;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  text-align: left;
+}
+
+.empty-state {
+  color: var(--text-muted);
+  padding: 40px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Warns that a toolbar edit reaches beyond the selected card */
+.toolbar-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}

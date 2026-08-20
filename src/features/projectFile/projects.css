@@ -1,0 +1,160 @@
+.pj-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(15, 20, 30, 0.45);
+}
+
+.pj-dialog {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 680px;
+  max-height: 84vh;
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.pj-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.pj-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.pj-title svg {
+  color: var(--accent);
+}
+
+.pj-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pj-close {
+  padding: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+}
+
+.pj-close:hover {
+  background: var(--panel-bg-subtle);
+  color: var(--text);
+}
+
+.pj-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pj-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--panel-bg);
+}
+
+.pj-row.is-current {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.pj-row-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.pj-row-name {
+  width: 100%;
+  padding: 3px 6px;
+  font-size: 13.5px;
+  font-weight: 500;
+  border-color: transparent;
+  background: transparent;
+}
+
+.pj-row-name:hover,
+.pj-row-name:focus {
+  border-color: var(--border);
+  background: var(--control-bg);
+}
+
+.pj-row-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 6px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.pj-current-badge {
+  padding: 1px 7px;
+  border-radius: 20px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.pj-row-del {
+  padding: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+}
+
+.pj-row-del:hover {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.pj-empty {
+  padding: 28px 10px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.pj-foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.pj-foot svg {
+  flex-shrink: 0;
+}
