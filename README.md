@@ -82,7 +82,7 @@ docker compose up -d --build
 ```
 
 It is then on <http://localhost:8080>, or on `http://<your-server>:8080` from elsewhere on your network.
-Change the host port in `docker-compose.yml` if 8080 is taken.
+Set `APP_PORT` (in the environment or a `.env` file) if 8080 is taken.
 
 Without compose:
 
