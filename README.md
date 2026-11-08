@@ -82,7 +82,11 @@ docker compose up -d --build
 ```
 
 It is then on <http://localhost:8080>, or on `http://<your-server>:8080` from elsewhere on your network.
-Set `APP_PORT` (in the environment or a `.env` file) if 8080 is taken.
+Set `APP_PORT` (in the environment or a `.env` file, see `.env.example`) if 8080 is taken.
+
+Pushing to `master` deploys the same compose file to the home server through
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), which runs on a self-hosted runner on the
+server and reads its `.env` from `/home/gh-runner/config/card-layout/.env`.
 
 Without compose:
 

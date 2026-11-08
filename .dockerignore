@@ -10,3 +10,6 @@ CLAUDE.md
 Dockerfile
 .dockerignore
 docker-compose.yml
+.env
+.env.example
+.github

@@ -1,0 +1,63 @@
+# Deployment to the home server. Runs on a self-hosted runner on the server
+# itself, so GitHub never needs to reach into the home network.
+#
+# The checkout is a scratch directory (actions/checkout wipes untracked files),
+# so nothing persistent may live in it: .env is copied in from outside on every
+# run. The app itself stores nothing server-side — projects and images live in
+# the visitor's IndexedDB — so there is no database, volume or backup step here.
+name: Deploy to homelab
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# Two deploys at once would fight over the same containers.
+concurrency:
+  group: deploy-card-layout
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, homelab]
+    timeout-minutes: 20
+    env:
+      ENV_FILE: /home/gh-runner/config/card-layout/.env
+      # Fixed project name, so the containers aren't keyed by the checkout
+      # directory name and a renamed workspace doesn't orphan the old ones.
+      COMPOSE_PROJECT_NAME: card-layout
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Copy .env from the server config
+        run: |
+          if [ ! -f "$ENV_FILE" ]; then
+            echo "::error::Missing $ENV_FILE — create it from .env.example (APP_PORT=8082)."
+            exit 1
+          fi
+          cp "$ENV_FILE" .env
+
+      # --force-recreate is not optional: without it Compose may build the new
+      # image but leave the container running the old one, and the deploy
+      # reports success while the app serves the previous build.
+      - name: Build and start
+        run: docker compose up -d --build --force-recreate --remove-orphans
+
+      # The port comes from the same .env Compose reads, so the two can't drift.
+      - name: Wait for health
+        run: |
+          port="$(sed -n 's/^APP_PORT=//p' .env | tr -d '"\r')"
+          for i in $(seq 1 30); do
+            if curl -fsS "http://localhost:${port:-8080}/" >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::The app did not report healthy within 60 s"
+          docker compose logs --tail 80 app
+          exit 1
+
+      - name: Prune old images
+        if: always()
+        run: docker image prune -f

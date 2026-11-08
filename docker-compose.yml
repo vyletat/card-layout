@@ -1,8 +1,19 @@
+# Local run and the home-server deployment use the same file:
+#
+#   docker compose up -d --build        build and serve on ${APP_PORT:-8080}
+#
+# No volumes and no database: the app keeps everything in the browser's
+# IndexedDB, so the container holds nothing worth persisting. The deploy
+# workflow fixes the Compose project name to `card-layout`.
+#
+# Watchtower must not touch this container — the image is built locally, so
+# there is no registry tag for it to follow.
+
 services:
-  card-layout:
+  app:
     build: .
-    image: card-layout:latest
-    container_name: card-layout
+    restart: unless-stopped
     ports:
       - '${APP_PORT:-8080}:80'
-    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=false
