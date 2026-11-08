@@ -1,3 +1,4 @@
+import { newId } from '../domain/ids';
 import type { LengthUnit } from '../domain/units';
 import type { Orientation } from '../domain/paperSizes';
 import type { DuplexMode } from '../domain/duplexMapping';
@@ -181,7 +182,7 @@ export function normalizeProject(project: Project): Project {
 export function createEmptyProject(name = 'Untitled'): Project {
   const now = Date.now();
   return {
-    id: crypto.randomUUID(),
+    id: newId(),
     name,
     settings: { ...DEFAULT_PROJECT_SETTINGS },
     sharedBackImageId: null,

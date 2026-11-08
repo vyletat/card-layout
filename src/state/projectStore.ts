@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import * as db from '../storage/db';
+import { newId } from '../domain/ids';
 import { deriveDisplayName, detectFileSide } from '../domain/filePairing';
 import {
   createEmptyProject,
@@ -104,7 +105,7 @@ let sessionRestored = false;
 
 function makeCard(spec: NewCardSpec, order: number): Card {
   return {
-    id: crypto.randomUUID(),
+    id: newId(),
     order,
     name: spec.name?.trim() || undefined,
     frontImageId: spec.frontImageId,
@@ -146,7 +147,7 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     for (const file of files) {
       const dims = await readImageDimensions(file);
       const meta: CardImageMeta = {
-        id: crypto.randomUUID(),
+        id: newId(),
         projectId,
         fileName: file.name,
         kind: detectFileSide(file.name) === 'back' ? 'back' : 'front',
@@ -254,7 +255,7 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
   duplicateCard: (cardId) => {
     const source = get().project.cards.find((c) => c.id === cardId);
     if (!source) return null;
-    const copyId = crypto.randomUUID();
+    const copyId = newId();
 
     set((state) => {
       const sorted = state.project.cards.slice().sort((a, b) => a.order - b.order);
